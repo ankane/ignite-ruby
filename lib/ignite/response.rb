@@ -63,9 +63,23 @@ module Ignite
       Time.at(sec).to_date
     end
 
+    def read_byte_array
+      len = read_int
+      read(len).unpack("C*")
+    end
+
     def read_long_array
       len = read_int
       read(len * 8).unpack("l!<*")
+    end
+
+    def read_double_array
+      len = read_int
+      read(len * 8).unpack("E*")
+    end
+
+    def read_bool_array
+      read_byte_array.map { |v| v != 0 }
     end
 
     # same as Python
@@ -118,8 +132,14 @@ module Ignite
         read_string
       when 11
         read_date
+      when 12
+        read_byte_array
       when 15
         read_long_array
+      when 17
+        read_double_array
+      when 19
+        read_bool_array
       when 30
         read_decimal
       when 33

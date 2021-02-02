@@ -30,6 +30,14 @@ class CacheTypesTest < Minitest::Test
     assert_caches [1, 2, 3]
   end
 
+  def test_float_array
+    assert_caches [1.1, 2.2, 3.3]
+  end
+
+  def test_bool_array
+    assert_caches [true, false, true]
+  end
+
   def test_nil
     error = assert_raises(Ignite::Error) do
       cache.put("k", nil)

@@ -71,16 +71,7 @@ module Ignite
         time = value.to_time
         long(time.to_i * 1000 + (time.nsec / 1000000))
       when Array
-        # empty arrays take first path for now
-        if value.all? { |v| v.is_a?(Integer) }
-          byte 15
-          int value.size
-          value.each do |v|
-            long v
-          end
-        else
-          raise Error, "Unable to cache array of #{value.map { |v| v.class.name }.uniq.join(", ")}"
-        end
+        array_object(value)
       when Time
         byte 33
         long(value.to_i * 1000 + (value.nsec / 1000000))
@@ -89,6 +80,34 @@ module Ignite
         byte 101
       else
         raise Error, "Unable to cache #{value.class.name}"
+      end
+    end
+
+    def array_object(value)
+      # empty arrays take first path for now
+      if value.all? { |v| v.is_a?(Integer) }
+        byte 15
+        int value.size
+        # TODO pack together for performance
+        value.each do |v|
+          long v
+        end
+      elsif value.all? { |v| v.is_a?(Float) }
+        byte 17
+        int value.size
+        # TODO pack together for performance
+        value.each do |v|
+          double v
+        end
+      elsif value.all? { |v| v == true || v == false }
+        byte 19
+        int value.size
+        # TODO pack together for performance
+        value.each do |v|
+          bool v
+        end
+      else
+        raise Error, "Unable to cache array of #{value.map { |v| v.class.name }.uniq.join(", ")}"
       end
     end
   end
