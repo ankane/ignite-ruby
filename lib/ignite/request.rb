@@ -48,7 +48,7 @@ module Ignite
     end
 
     def string(value)
-      byte 9
+      byte TYPE_STRING
       int value.bytesize
       @buffer << value
     end
@@ -56,28 +56,28 @@ module Ignite
     def data_object(value)
       case value
       when Integer
-        byte 4
+        byte TYPE_LONG
         long value
       when Float
-        byte 6
+        byte TYPE_DOUBLE
         double value
       when TrueClass, FalseClass
-        byte 8
+        byte TYPE_BOOL
         bool value
       when String
         string value
       when Date
-        byte 11
+        byte TYPE_DATE
         time = value.to_time
         long(time.to_i * 1000 + (time.nsec / 1000000))
       when Array
         array_object(value)
       when Time
-        byte 33
+        byte TYPE_TIMESTAMP
         long(value.to_i * 1000 + (value.nsec / 1000000))
         int value.nsec % 1000000
       when NilClass
-        byte 101
+        byte TYPE_NULL
       else
         raise Error, "Unable to cache #{value.class.name}"
       end
@@ -86,11 +86,11 @@ module Ignite
     def array_object(value)
       # empty arrays take first path for now
       if value.all? { |v| v.is_a?(Integer) }
-        array(15, value, "l!<")
+        array(TYPE_LONG_ARRAY, value, "l!<")
       elsif value.all? { |v| v.is_a?(Float) }
-        array(17, value, "E")
+        array(TYPE_DOUBLE_ARRAY, value, "E")
       elsif value.all? { |v| v == true || v == false }
-        array(19, value.map { |v| v ? 1 : 0 }, "C")
+        array(TYPE_BOOL_ARRAY, value.map { |v| v ? 1 : 0 }, "C")
       else
         raise Error, "Unable to cache array of #{value.map { |v| v.class.name }.uniq.join(", ")}"
       end

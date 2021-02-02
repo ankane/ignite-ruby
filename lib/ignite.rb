@@ -9,6 +9,7 @@ require "ignite/cache"
 require "ignite/op_codes"
 require "ignite/request"
 require "ignite/response"
+require "ignite/type_codes"
 require "ignite/version"
 
 module Ignite

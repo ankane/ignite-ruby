@@ -53,7 +53,7 @@ module Ignite
 
     def read_string_object
       type = read_byte
-      raise Error, "Expected string, not type #{type}" unless type == 9
+      raise Error, "Expected string, not type #{type}" unless type == TYPE_STRING
       read_string
     end
 
@@ -112,39 +112,39 @@ module Ignite
     def read_data_object
       type_code = read_byte
       case type_code
-      when 1
+      when TYPE_BYTE
         read_byte
-      when 2
+      when TYPE_SHORT
         read_short
-      when 3
+      when TYPE_INT
         read_int
-      when 4
+      when TYPE_LONG
         read_long
-      when 5
+      when TYPE_FLOAT
         read_float
-      when 6
+      when TYPE_DOUBLE
         read_double
-      when 7
+      when TYPE_CHAR
         read_char
-      when 8
+      when TYPE_BOOL
         read_bool
-      when 9
+      when TYPE_STRING
         read_string
-      when 11
+      when TYPE_DATE
         read_date
-      when 12
+      when TYPE_BYTE_ARRAY
         read_byte_array
-      when 15
+      when TYPE_LONG_ARRAY
         read_long_array
-      when 17
+      when TYPE_DOUBLE_ARRAY
         read_double_array
-      when 19
+      when TYPE_BOOL_ARRAY
         read_bool_array
-      when 30
+      when TYPE_DECIMAL
         read_decimal
-      when 33
+      when TYPE_TIMESTAMP
         read_timestamp
-      when 101
+      when TYPE_NULL
         nil
       else
         raise Error, "Type not supported yet: #{type_code}. Please create an issue."
