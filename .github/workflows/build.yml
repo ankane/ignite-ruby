@@ -4,13 +4,22 @@ jobs:
   build:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - ruby: 3.0
+          config: example-ignite.xml
+        - ruby: 2.7
+          config: authentication.xml
+          env: IGNITE_AUTH=t
     env:
       IGNITE_VERSION: 2.9.1
     steps:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0
+        ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
 
     - uses: actions/cache@v2
@@ -26,6 +35,8 @@ jobs:
         mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
 
     - run: |
-        ~/ignite/bin/ignite.sh ~/ignite/examples/config/example-ignite.xml &
-        sleep 20
-    - run: bundle exec rake test
+        cp test/support/authentication.xml ~/ignite/examples/config
+        ~/ignite/bin/ignite.sh ~/ignite/examples/config/${{ matrix.config }} &
+        sleep 15
+        ~/ignite/bin/control.sh --user ignite --password ignite --set-state ACTIVE --yes
+    - run: ${{ matrix.env }} bundle exec rake test
