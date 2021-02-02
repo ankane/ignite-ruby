@@ -86,29 +86,20 @@ module Ignite
     def array_object(value)
       # empty arrays take first path for now
       if value.all? { |v| v.is_a?(Integer) }
-        byte 15
-        int value.size
-        # TODO pack together for performance
-        value.each do |v|
-          long v
-        end
+        array(15, value, "l!<")
       elsif value.all? { |v| v.is_a?(Float) }
-        byte 17
-        int value.size
-        # TODO pack together for performance
-        value.each do |v|
-          double v
-        end
+        array(17, value, "E")
       elsif value.all? { |v| v == true || v == false }
-        byte 19
-        int value.size
-        # TODO pack together for performance
-        value.each do |v|
-          bool v
-        end
+        array(19, value.map { |v| v ? 1 : 0 }, "C")
       else
         raise Error, "Unable to cache array of #{value.map { |v| v.class.name }.uniq.join(", ")}"
       end
+    end
+
+    def array(type_code, value, pack)
+      byte type_code
+      int value.size
+      value.pack("#{pack}*", buffer: @buffer)
     end
   end
 end
