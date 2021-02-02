@@ -117,7 +117,6 @@ For [SSL/TLS](https://ignite.apache.org/docs/latest/security/ssl-tls#ssl-for-cli
 Ignite::Client.new(
   use_ssl: true,
   ssl_params: {
-    verify_mode: OpenSSL::SSL::VERIFY_PEER,
     ca_file: "ca.pem"
   }
 )
