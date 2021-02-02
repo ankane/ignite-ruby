@@ -4,7 +4,9 @@ module Ignite
     MAX_LONG =  9223372036854775807 #  2**63-1
 
     def initialize(op_code)
-      @buffer = String.new
+      @format = String.new
+      @values = []
+
       int 0 # length placeholder
 
       if op_code != OP_HANDSHAKE
@@ -14,9 +16,10 @@ module Ignite
     end
 
     def to_bytes
+      buffer = @values.pack(@format)
       # update length
-      @buffer[0..3] = [@buffer.bytesize - 4].pack(PACK_INT)
-      @buffer
+      buffer[0..3] = [buffer.bytesize - 4].pack(PACK_INT)
+      buffer
     end
 
     def bool(value)
@@ -24,33 +27,40 @@ module Ignite
     end
 
     def byte(value)
-      [value].pack(PACK_BYTE, buffer: @buffer)
+      @format << PACK_BYTE
+      @values << value
     end
 
     def short(value)
-      [value].pack(PACK_SHORT, buffer: @buffer)
+      @format << PACK_SHORT
+      @values << value
     end
 
     def int(value)
-      [value].pack(PACK_INT, buffer: @buffer)
+      @format << PACK_INT
+      @values << value
     end
 
     def long(value)
-      [value].pack(PACK_LONG, buffer: @buffer)
+      @format << PACK_LONG
+      @values << value
     end
 
     def float(value)
-      [value].pack(PACK_FLOAT, buffer: @buffer)
+      @format << PACK_FLOAT
+      @values << value
     end
 
     def double(value)
-      [value].pack(PACK_DOUBLE, buffer: @buffer)
+      @format << PACK_DOUBLE
+      @values << value
     end
 
     def string(value)
       byte TYPE_STRING
       int value.bytesize
-      @buffer << value
+      @format << "a#{value.bytesize}"
+      @values << value
     end
 
     def data_object(value)
@@ -99,7 +109,8 @@ module Ignite
     def array(type_code, value, pack)
       byte type_code
       int value.size
-      value.pack("#{pack}*", buffer: @buffer)
+      @format << "#{pack}#{value.size}"
+      @values.concat(value)
     end
   end
 end
