@@ -15,7 +15,7 @@ module Ignite
 
     def to_bytes
       # update length
-      @buffer[0..3] = [@buffer.bytesize - 4].pack("i!<")
+      @buffer[0..3] = [@buffer.bytesize - 4].pack(PACK_INT)
       @buffer
     end
 
@@ -24,27 +24,27 @@ module Ignite
     end
 
     def byte(value)
-      [value].pack("C", buffer: @buffer)
+      [value].pack(PACK_BYTE, buffer: @buffer)
     end
 
     def short(value)
-      [value].pack("s!<", buffer: @buffer)
+      [value].pack(PACK_SHORT, buffer: @buffer)
     end
 
     def int(value)
-      [value].pack("i!<", buffer: @buffer)
+      [value].pack(PACK_INT, buffer: @buffer)
     end
 
     def long(value)
-      [value].pack("l!<", buffer: @buffer)
+      [value].pack(PACK_LONG, buffer: @buffer)
     end
 
     def float(value)
-      [value].pack("e", buffer: @buffer)
+      [value].pack(PACK_FLOAT, buffer: @buffer)
     end
 
     def double(value)
-      [value].pack("E", buffer: @buffer)
+      [value].pack(PACK_DOUBLE, buffer: @buffer)
     end
 
     def string(value)
@@ -86,11 +86,11 @@ module Ignite
     def array_object(value)
       # empty arrays take first path for now
       if value.all? { |v| v.is_a?(Integer) }
-        array(TYPE_LONG_ARRAY, value, "l!<")
+        array(TYPE_LONG_ARRAY, value, PACK_LONG)
       elsif value.all? { |v| v.is_a?(Float) }
-        array(TYPE_DOUBLE_ARRAY, value, "E")
+        array(TYPE_DOUBLE_ARRAY, value, PACK_DOUBLE)
       elsif value.all? { |v| v == true || v == false }
-        array(TYPE_BOOL_ARRAY, value.map { |v| v ? 1 : 0 }, "C")
+        array(TYPE_BOOL_ARRAY, value.map { |v| v ? 1 : 0 }, PACK_CHAR)
       else
         raise Error, "Unable to cache array of #{value.map { |v| v.class.name }.uniq.join(", ")}"
       end

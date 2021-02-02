@@ -6,7 +6,7 @@ module Ignite
       @client = client
 
       # use buffer so errors don't leave unread data on socket
-      len = client.read(4).unpack1("i!<")
+      len = client.read(SIZE_INT).unpack1(PACK_INT)
       @buffer = StringIO.new(client.read(len))
     end
 
@@ -15,31 +15,31 @@ module Ignite
     end
 
     def read_byte
-      read(1).unpack1("C")
+      read(SIZE_BYTE).unpack1(PACK_BYTE)
     end
 
     def read_short
-      read(2).unpack1("s!<")
+      read(SIZE_SHORT).unpack1(PACK_SHORT)
     end
 
     def read_int
-      read(4).unpack1("i!<")
+      read(SIZE_INT).unpack1(PACK_INT)
     end
 
     def read_long
-      read(8).unpack1("l!<")
+      read(SIZE_LONG).unpack1(PACK_LONG)
     end
 
     def read_float
-      read(4).unpack1("e")
+      read(SIZE_FLOAT).unpack1(PACK_FLOAT)
     end
 
     def read_double
-      read(8).unpack1("E")
+      read(SIZE_DOUBLE).unpack1(PACK_DOUBLE)
     end
 
     def read_char
-      read(1).unpack1("c")
+      read(SIZE_CHAR).unpack1(PACK_CHAR)
     end
 
     def read_bool
@@ -64,18 +64,15 @@ module Ignite
     end
 
     def read_byte_array
-      len = read_int
-      read(len).unpack("C*")
+      read_array(SIZE_BYTE, PACK_BYTE)
     end
 
     def read_long_array
-      len = read_int
-      read(len * 8).unpack("l!<*")
+      read_array(SIZE_LONG, PACK_LONG)
     end
 
     def read_double_array
-      len = read_int
-      read(len * 8).unpack("E*")
+      read_array(SIZE_DOUBLE, PACK_DOUBLE)
     end
 
     def read_bool_array
@@ -149,6 +146,13 @@ module Ignite
       else
         raise Error, "Type not supported yet: #{type_code}. Please create an issue."
       end
+    end
+
+    private
+
+    def read_array(size, pack)
+      len = read_int
+      read(len * size).unpack("#{pack}*")
     end
   end
 end
