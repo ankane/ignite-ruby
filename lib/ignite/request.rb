@@ -15,6 +15,9 @@ module Ignite
       end
     end
 
+    # reduce allocations by packing together
+    # but need to make sure values aren't modified
+    # between when they are added and packed
     def to_bytes
       buffer = @values.pack(@format)
       # update length
