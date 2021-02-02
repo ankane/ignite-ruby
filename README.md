@@ -89,7 +89,7 @@ client.query("SELECT * FROM products WHERE name = ?", ["Ignite"])
 
 ## Connection Options
 
-Specify a host and port
+Specify the host and port
 
 ```ruby
 Ignite::Client.new(host: "localhost", port: 10800)

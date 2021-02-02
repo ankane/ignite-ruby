@@ -25,5 +25,7 @@ jobs:
         unzip -q apache-ignite-$IGNITE_VERSION-bin.zip
         mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
 
-    - run: ~/ignite/bin/ignite.sh ~/ignite/examples/config/example-ignite.xml && sleep 20
+    - run: |
+        ~/ignite/bin/ignite.sh ~/ignite/examples/config/example-ignite.xml &
+        sleep 20
     - run: bundle exec rake test
