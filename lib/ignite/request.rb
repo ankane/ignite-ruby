@@ -77,7 +77,7 @@ module Ignite
       when NilClass
         byte 101
       else
-        raise "Unknown type: #{value.class.name}"
+        raise Error, "Unable to cache #{value.class.name}"
       end
     end
   end

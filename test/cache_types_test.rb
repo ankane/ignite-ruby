@@ -33,6 +33,13 @@ class CacheTypesTest < Minitest::Test
     assert_equal "Ouch! Argument cannot be null: val", error.message
   end
 
+  def test_object
+    error = assert_raises(Ignite::Error) do
+      cache.put("k", Object.new)
+    end
+    assert_equal "Unable to cache Object", error.message
+  end
+
   def assert_caches(value)
     cache.put("k", value)
     assert_equal value, cache.get("k")

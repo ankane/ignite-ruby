@@ -53,7 +53,7 @@ module Ignite
 
     def read_string_object
       type = read_byte
-      raise "Expected string, not type #{type}" unless type == 9
+      raise Error, "Expected string, not type #{type}" unless type == 9
       read_string
     end
 
