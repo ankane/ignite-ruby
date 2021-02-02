@@ -63,6 +63,11 @@ module Ignite
       Time.at(sec).to_date
     end
 
+    def read_long_array
+      len = read_int
+      read(len * 8).unpack("l!<*")
+    end
+
     # same as Python
     def read_decimal
       scale = read_int
@@ -113,6 +118,8 @@ module Ignite
         read_string
       when 11
         read_date
+      when 15
+        read_long_array
       when 30
         read_decimal
       when 33

@@ -26,6 +26,10 @@ class CacheTypesTest < Minitest::Test
     assert_caches Time.now
   end
 
+  def test_integer_array
+    assert_caches [1, 2, 3]
+  end
+
   def test_nil
     error = assert_raises(Ignite::Error) do
       cache.put("k", nil)
@@ -33,11 +37,22 @@ class CacheTypesTest < Minitest::Test
     assert_equal "Ouch! Argument cannot be null: val", error.message
   end
 
+  def test_empty_array
+    assert_caches []
+  end
+
   def test_object
     error = assert_raises(Ignite::Error) do
       cache.put("k", Object.new)
     end
     assert_equal "Unable to cache Object", error.message
+  end
+
+  def test_object_array
+    error = assert_raises(Ignite::Error) do
+      cache.put("k", [Object.new])
+    end
+    assert_equal "Unable to cache array of Object", error.message
   end
 
   def assert_caches(value)
