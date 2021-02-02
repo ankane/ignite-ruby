@@ -1,0 +1,29 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    env:
+      IGNITE_VERSION: 2.9.1
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/ignite
+        key: ignite-${{ env.IGNITE_VERSION }}
+      id: cache-ignite
+    - name: Download Ignite
+      if: steps.cache-ignite.outputs.cache-hit != 'true'
+      run: |
+        wget -q https://apache.osuosl.org//ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
+        unzip -q apache-ignite-$IGNITE_VERSION-bin.zip
+        mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
+
+    - run: ~/ignite/bin/ignite.sh ~/ignite/examples/config/example-ignite.xml && sleep 20
+    - run: bundle exec rake test
