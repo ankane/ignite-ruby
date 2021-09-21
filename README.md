@@ -95,6 +95,12 @@ Specify the host and port
 Ignite::Client.new(host: "localhost", port: 10800)
 ```
 
+Specify the connect timeout [unreleased]
+
+```ruby
+Ignite::Client.new(connect_timeout: 3)
+```
+
 ## Authentication
 
 For [authentication](https://ignite.apache.org/docs/latest/security/authentication), use:

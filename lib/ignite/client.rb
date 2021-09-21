@@ -2,8 +2,8 @@ require "ignite"
 
 module Ignite
   class Client
-    def initialize(host: "localhost", port: 10800, username: nil, password: nil, use_ssl: nil, ssl_params: {})
-      @socket = TCPSocket.new(host, port)
+    def initialize(host: "localhost", port: 10800, username: nil, password: nil, use_ssl: nil, ssl_params: {}, connect_timeout: nil)
+      @socket = Socket.tcp(host, port, connect_timeout: connect_timeout, resolv_timeout: connect_timeout)
 
       use_ssl = use_ssl.nil? ? (username || password) : use_ssl
       if use_ssl
