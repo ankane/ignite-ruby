@@ -95,7 +95,7 @@ Specify the host and port
 Ignite::Client.new(host: "localhost", port: 10800)
 ```
 
-Specify the connect timeout [unreleased]
+Specify the connect timeout
 
 ```ruby
 Ignite::Client.new(connect_timeout: 3)
