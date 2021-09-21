@@ -16,4 +16,5 @@ require "ignite/version"
 module Ignite
   class Error < StandardError; end
   class HandshakeError < Error; end
+  class TimeoutError < Error; end
 end
