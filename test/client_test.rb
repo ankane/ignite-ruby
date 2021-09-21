@@ -12,6 +12,6 @@ class ClientTest < Minitest::Test
     error = assert_raises(Ignite::HandshakeError) do
       Ignite::Client.new
     end
-    assert_equal "Unauthenticated sessions are prohibited.", error.message
+    assert_equal "The user name or password is incorrect [userName=null]", error.message
   end
 end
