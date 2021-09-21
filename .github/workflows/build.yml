@@ -14,7 +14,7 @@ jobs:
           config: authentication.xml
           env: IGNITE_AUTH=t
     env:
-      IGNITE_VERSION: 2.9.1
+      IGNITE_VERSION: 2.11.0
     steps:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
@@ -30,7 +30,7 @@ jobs:
     - name: Download Ignite
       if: steps.cache-ignite.outputs.cache-hit != 'true'
       run: |
-        wget -q https://apache.osuosl.org//ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
+        wget -q https://dlcdn.apache.org//ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
         unzip -q apache-ignite-$IGNITE_VERSION-bin.zip
         mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
 
