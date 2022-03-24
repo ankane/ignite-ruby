@@ -9,7 +9,7 @@
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'ignite-client'
+gem "ignite-client"
 ```
 
 ## Getting Started
