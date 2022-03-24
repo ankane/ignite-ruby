@@ -25,7 +25,7 @@ class SqlTest < Minitest::Test
     error = assert_raises(Ignite::Error) do
       client.query("CREATE TABLE users (id INTEGER PRIMARY KEY, name CHAR(255))", statement_type: :select)
     end
-    assert_equal "Given statement type does not match that declared by JDBC driver", error.message
+    assert_match "Given statement type does not match that declared by JDBC driver", error.message
   end
 
   def test_error
