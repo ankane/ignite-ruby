@@ -7,35 +7,35 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - ruby: 3.1
-          config: example-ignite.xml
-        - ruby: 2.7
-          config: authentication.xml
-          env: IGNITE_AUTH=t
+          - ruby: 3.2
+            config: example-ignite.xml
+          - ruby: 2.7
+            config: authentication.xml
+            env: IGNITE_AUTH=t
     env:
       IGNITE_VERSION: 2.14.0
     steps:
-    - uses: actions/checkout@v3
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
 
-    - uses: actions/cache@v3
-      with:
-        path: ~/ignite
-        key: ignite-${{ env.IGNITE_VERSION }}
-      id: cache-ignite
-    - name: Download Ignite
-      if: steps.cache-ignite.outputs.cache-hit != 'true'
-      run: |
-        wget -q https://dlcdn.apache.org//ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
-        unzip -q apache-ignite-$IGNITE_VERSION-bin.zip
-        mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
+      - uses: actions/cache@v3
+        with:
+          path: ~/ignite
+          key: ignite-${{ env.IGNITE_VERSION }}
+        id: cache-ignite
+      - name: Download Ignite
+        if: steps.cache-ignite.outputs.cache-hit != 'true'
+        run: |
+          wget -q https://dlcdn.apache.org//ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
+          unzip -q apache-ignite-$IGNITE_VERSION-bin.zip
+          mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
 
-    - run: |
-        cp test/support/authentication.xml ~/ignite/examples/config
-        ~/ignite/bin/ignite.sh ~/ignite/examples/config/${{ matrix.config }} &
-        sleep 15
-        ~/ignite/bin/control.sh --user ignite --password ignite --set-state ACTIVE --yes
-    - run: ${{ matrix.env }} bundle exec rake test
+      - run: |
+          cp test/support/authentication.xml ~/ignite/examples/config
+          ~/ignite/bin/ignite.sh ~/ignite/examples/config/${{ matrix.config }} &
+          sleep 15
+          ~/ignite/bin/control.sh --user ignite --password ignite --set-state ACTIVE --yes
+      - run: ${{ matrix.env }} bundle exec rake test
