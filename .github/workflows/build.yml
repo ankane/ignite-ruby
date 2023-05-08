@@ -9,11 +9,11 @@ jobs:
         include:
           - ruby: 3.2
             config: example-ignite.xml
-          - ruby: 2.7
+          - ruby: "3.0"
             config: authentication.xml
             env: IGNITE_AUTH=t
     env:
-      IGNITE_VERSION: 2.14.0
+      IGNITE_VERSION: 2.15.0
     steps:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1

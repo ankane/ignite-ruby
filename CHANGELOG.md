@@ -1,3 +1,7 @@
+## 0.2.0 (unreleased)
+
+- Dropped support for Ruby < 3
+
 ## 0.1.2 (2021-09-20)
 
 - Added connect timeout
