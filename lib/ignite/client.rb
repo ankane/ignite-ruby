@@ -1,4 +1,4 @@
-require "ignite"
+require_relative "../ignite"
 
 module Ignite
   class Client
