@@ -5,13 +5,13 @@ require "openssl"
 require "socket"
 
 # modules
-require "ignite/cache"
-require "ignite/op_codes"
-require "ignite/pack_formats"
-require "ignite/request"
-require "ignite/response"
-require "ignite/type_codes"
-require "ignite/version"
+require_relative "ignite/cache"
+require_relative "ignite/op_codes"
+require_relative "ignite/pack_formats"
+require_relative "ignite/request"
+require_relative "ignite/response"
+require_relative "ignite/type_codes"
+require_relative "ignite/version"
 
 module Ignite
   class Error < StandardError; end
