@@ -7,15 +7,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 3.2
+          - ruby: 3.3
             config: example-ignite.xml
           - ruby: "3.0"
             config: authentication.xml
             env: IGNITE_AUTH=t
     env:
-      IGNITE_VERSION: 2.15.0
+      IGNITE_VERSION: 2.16.0
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
