@@ -2,7 +2,7 @@
 
 :fire: Ruby client for [Apache Ignite](https://ignite.apache.org/)
 
-[![Build Status](https://github.com/ankane/ignite-ruby/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ignite-ruby/actions)
+[![Build Status](https://github.com/ankane/ignite-ruby/actions/workflows/build.yml/badge.svg)](https://github.com/ankane/ignite-ruby/actions)
 
 ## Installation
 
