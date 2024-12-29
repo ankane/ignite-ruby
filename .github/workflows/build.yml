@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 3.3
+          - ruby: 3.4
             config: example-ignite.xml
           - ruby: "3.0"
             config: authentication.xml

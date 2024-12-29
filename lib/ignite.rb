@@ -1,5 +1,7 @@
-# stdlib
+# dependencies
 require "bigdecimal"
+
+# stdlib
 require "date"
 require "openssl"
 require "socket"
