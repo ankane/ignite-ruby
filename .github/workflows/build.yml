@@ -8,12 +8,14 @@ jobs:
       matrix:
         include:
           - ruby: 3.4
+            ignite: 3.0.0
             config: example-ignite.xml
           - ruby: 3.2
+            ignite: 2.17.0
             config: authentication.xml
             env: IGNITE_AUTH=t
     env:
-      IGNITE_VERSION: 2.16.0
+      IGNITE_VERSION: ${{ matrix.ignite }}
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -29,7 +31,7 @@ jobs:
       - name: Download Ignite
         if: steps.cache-ignite.outputs.cache-hit != 'true'
         run: |
-          wget -q https://dlcdn.apache.org//ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
+          wget -q https://dlcdn.apache.org/ignite/$IGNITE_VERSION/apache-ignite-$IGNITE_VERSION-bin.zip
           unzip -q apache-ignite-$IGNITE_VERSION-bin.zip
           mv apache-ignite-$IGNITE_VERSION-bin ~/ignite
 
