@@ -9,7 +9,7 @@ jobs:
         include:
           - ruby: 3.4
             config: example-ignite.xml
-          - ruby: "3.0"
+          - ruby: 3.2
             config: authentication.xml
             env: IGNITE_AUTH=t
     env:
