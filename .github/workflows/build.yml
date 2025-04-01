@@ -8,7 +8,7 @@ jobs:
       matrix:
         include:
           - ruby: 3.4
-            ignite: 3.0.0
+            ignite: 2.17.0
             config: example-ignite.xml
           - ruby: 3.2
             ignite: 2.17.0
