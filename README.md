@@ -12,6 +12,8 @@ Add this line to your application’s Gemfile:
 gem "ignite-client"
 ```
 
+Supports Ignite 2
+
 ## Getting Started
 
 Create a client
