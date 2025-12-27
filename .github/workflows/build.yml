@@ -17,13 +17,13 @@ jobs:
     env:
       IGNITE_VERSION: ${{ matrix.ignite }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/ignite
           key: ignite-${{ env.IGNITE_VERSION }}
